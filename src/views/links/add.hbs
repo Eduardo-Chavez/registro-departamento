@@ -6,13 +6,20 @@
                 <div class="card-body">
                     <form action="/links/add" method="POST">
                         <div class="form-group">
-                            <textarea name="descripcion" rows="2" class="form-control" placeholder="Descripcion" autofocus></textarea>
+                            <textarea name="descripcion" rows="2" class="form-control" minlength="6" maxlength="200" placeholder="Descripcion" autofocus required></textarea>
                         </div>
                         <div class="form-group">
-                            <input type="text" name="planta" class="form-control" placeholder="Planta">
+                            <select name="planta" class="form-control" placeholder="Planta" required>
+                                <option value="Planta Baja">Planta Baja</option>
+                                <option value="Planta Superior">Planta Superior</option>
+                                <option value="Planta Terraza">Planta Terraza</option>
+                                <option value="Planta Horizontal">Planta Horizontal</option>
+                                <option value="Planta Vertical">Planta Vertical</option>
+                                <option value="Planta Media">Planta Media</option>
+                            </select>
                         </div>
                         <div class="form-group">
-                            <input type="text" name="fechaConstruccion" class="form-control" placeholder="Fecha de Construcción">
+                            <input type="date" name="fechaConstruccion" class="form-control" placeholder="Fecha de Construcción" required>
                         </div>
                         <div class="form-group">
                             <button class="btn btn-success btn-block">
