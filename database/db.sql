@@ -23,7 +23,7 @@ Create table departamento(
     cveDepartamento smallint not null,
     descripcion varchar(500) not null,
     planta varchar(500) not null,
-    fechaConstruccion date not null,
+    fechaConstruccion varchar(500) not null,
     cveEncargado smallint,
     created_at timestamp not null default current_timestamp,
     constraint fk_user foreign key (cveEncargado) references usuario(cveUsuario)
