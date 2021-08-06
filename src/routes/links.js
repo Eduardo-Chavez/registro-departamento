@@ -16,6 +16,7 @@ router.post('/add', async (req, res) => {
         fechaConstruccion
     };
     await pool.query('INSERT INTO departamento set ?', [newLink]);
+    req.flash('success', 'Departamento guardado correctamente.');
     res.redirect('/links');
 });
 
@@ -28,6 +29,7 @@ router.get('/', async (req, res) => {
 /*Eliminar departamento*/
 router.get('/delete/:cveDepartamento', async (req, res) => {
     const { cveDepartamento } = req.params;
+    req.flash('success', 'Se elemino por completo el Departamento');
     await pool.query('DELETE FROM departamento WHERE cveDepartamento = ?', [cveDepartamento]);
     res.redirect('/links');
 });
@@ -39,7 +41,7 @@ router.get('/edit/:cveDepartamento', async (req, res) => {
     res.render('links/edit', {link: links[0]})
 });
 
-router.post('edit/:cveDepartamento', async (req, res) => {
+router.post('/edit/:cveDepartamento', async (req, res) => {
     const { cveDepartamento } = req.params;
     const { descripcion, planta, fechaConstruccion } = req.body;
     const newLink = {
@@ -47,8 +49,9 @@ router.post('edit/:cveDepartamento', async (req, res) => {
         planta,
         fechaConstruccion
     };
-    await pool.query('UPDATE departamento set ? WHERE cveDepartamento', [newLink, cveDepartamento]);
+    req.flash('success', 'Se actualizo correctamente el Departamento.');
+    await pool.query('UPDATE departamento set ? WHERE cveDepartamento = ?', [newLink, cveDepartamento]);
     res.redirect('/links');
-})
+});
 
 module.exports = router;
