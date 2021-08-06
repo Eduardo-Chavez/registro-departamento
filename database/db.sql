@@ -22,7 +22,7 @@ Alter table usuario modify cveUsuario smallint not null auto_increment, auto_inc
 Create table departamento(
     cveDepartamento smallint not null,
     descripcion varchar(500) not null,
-    planta smallint not null,
+    planta varchar(500) not null,
     fechaConstruccion date not null,
     cveEncargado smallint,
     created_at timestamp not null default current_timestamp,
