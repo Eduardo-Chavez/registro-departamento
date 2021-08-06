@@ -2,18 +2,20 @@ const express = require('express');
 const router = express.Router();
 
 const pool = require('../database');
+const { isLoggedIn } = require('../lib/auth');
 
-router.get('/add', (req, res) => {
+router.get('/add', isLoggedIn, (req, res) => {
     res.render('links/add');
 });
 
 /*Para insertar los datos en la tabla departamento*/
-router.post('/add', async (req, res) => {
+router.post('/add', isLoggedIn, async (req, res) => {
     const { descripcion, planta, fechaConstruccion } = req.body;
     const newLink = {
         descripcion,
         planta,
-        fechaConstruccion
+        fechaConstruccion,
+        cveEncargado: req.user.cveUsuario
     };
     await pool.query('INSERT INTO departamento set ?', [newLink]);
     req.flash('success', 'Departamento guardado correctamente.');
@@ -21,13 +23,13 @@ router.post('/add', async (req, res) => {
 });
 
 /*Para mostrar la informacion de la tabla */
-router.get('/', async (req, res) => {
-    const links = await pool.query('SELECT * FROM departamento');
+router.get('/', isLoggedIn, async (req, res) => {
+    const links = await pool.query('SELECT * FROM departamento WHERE cveEncargado = ?', [req.user.cveUsuario]);
     res.render('links/list', {links});
 });
 
 /*Eliminar departamento*/
-router.get('/delete/:cveDepartamento', async (req, res) => {
+router.get('/delete/:cveDepartamento', isLoggedIn, async (req, res) => {
     const { cveDepartamento } = req.params;
     req.flash('success', 'Se elemino por completo el Departamento');
     await pool.query('DELETE FROM departamento WHERE cveDepartamento = ?', [cveDepartamento]);
@@ -35,13 +37,13 @@ router.get('/delete/:cveDepartamento', async (req, res) => {
 });
 
 /*Para editar los registros*/
-router.get('/edit/:cveDepartamento', async (req, res) => {
+router.get('/edit/:cveDepartamento', isLoggedIn, async (req, res) => {
     const { cveDepartamento } = req.params;
     const links = await pool.query('SELECT * FROM departamento Where cveDepartamento = ?', [cveDepartamento]);
     res.render('links/edit', {link: links[0]})
 });
 
-router.post('/edit/:cveDepartamento', async (req, res) => {
+router.post('/edit/:cveDepartamento', isLoggedIn, async (req, res) => {
     const { cveDepartamento } = req.params;
     const { descripcion, planta, fechaConstruccion } = req.body;
     const newLink = {
