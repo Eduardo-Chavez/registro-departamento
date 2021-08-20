@@ -15,7 +15,7 @@ router.post('/add', isLoggedIn, async (req, res) => {
         descripcion,
         planta,
         fechaConstruccion,
-        cveEncargado: req.user.cveUsuario
+        cveEncargado: req.user.cveUsuario //Para las sesiones
     };
     await pool.query('INSERT INTO departamento set ?', [newLink]);
     req.flash('success', 'Departamento guardado correctamente.');
